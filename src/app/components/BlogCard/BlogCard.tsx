@@ -1,6 +1,7 @@
-import { Calendar, UserRound } from 'lucide-react'
+import { ArrowLeft, Calendar, UserRound } from 'lucide-react'
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export const BlogCard = () => {
   return (
@@ -24,7 +25,22 @@ export const BlogCard = () => {
             <span className='flex items-center'><Calendar className='inline-block mr-2' size={20} />2024-10-01</span>
             </span>
             <hr className='text-gray-300' />
+            <p className="text-lg text-gray-700">
+                In a world that often feels fast-paced and overwhelming, it&apos;s important to pause and appreciate the simple joys that surround us. Whether it&apos;s a warm cup of coffee in the morning, a walk in the park, or a heartfelt conversation with a friend, these moments can bring genuine happiness and fulfillment. Embracing mindfulness and gratitude helps us find beauty in the everyday and reminds us to cherish the present.
+            </p>
+            <p className="text-lg text-gray-700 mt-3">
+                Taking time to notice the little things—a gentle breeze, laughter shared with loved ones, or the colors of a sunset—can transform an ordinary day into something memorable. By focusing on what truly matters, we cultivate a sense of peace and contentment that enriches our lives.
+            </p>
+            <p className="text-lg text-gray-700 mt-3">
+                Practicing gratitude daily, even for the smallest blessings, helps shift our perspective and fosters resilience during challenging times. Simple routines, like journaling or spending a few minutes in nature, can ground us and encourage a deeper appreciation for life’s everyday moments.
+            </p>
         </article>
+        <div className='w-full max-w-7xl my-3'>
+            <Link href={'#'} className='group self-start w-fit bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md font-semibold cursor-pointer flex items-center gap-2'>
+                <ArrowLeft className="inline-block group-hover:-translate-x-1 transition-all duration-300 ease-in" size={18} />
+                Go Back List Of Blogs
+            </Link>
+        </div>
         <div className='w-full max-w-7xl'>
         <span className='text-3xl font-bold'>Comments</span>
         </div>
