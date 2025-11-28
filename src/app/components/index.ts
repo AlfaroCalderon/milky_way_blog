@@ -1,3 +1,4 @@
+export {PersonalListOfPost} from "./PersonalListOfPost/PersonalListOfPost";
 export {CreationBlogForm} from "./CreationBlogForm/CreationBlogForm";
 export { BlogCard } from "./BlogCard/BlogCard";
 export { BlogList } from "./BlogList/BlogList";
