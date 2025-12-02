@@ -1,3 +1,4 @@
+export {UserManagement} from "./UserManagement/UserManagement";
 export {PersonalListOfPost} from "./PersonalListOfPost/PersonalListOfPost";
 export {CreationBlogForm} from "./CreationBlogForm/CreationBlogForm";
 export { BlogCard } from "./BlogCard/BlogCard";
