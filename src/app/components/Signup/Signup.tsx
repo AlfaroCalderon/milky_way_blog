@@ -38,7 +38,7 @@ export const Signup = () => {
                     </div>
                     <div className='flex flex-col space-y-5'>
                         <button type='submit' className=' bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-500 cursor-pointer'>Sign Up</button>
-                        <span className='text-center'>Already have an account? <Link href={'#'} className='text-blue-600 hover:text-blue-500 cursor-pointer' >Sign in</Link></span>
+                        <span className='text-center'>Already have an account? <Link href={'/signin'} className='text-blue-600 hover:text-blue-500 cursor-pointer' >Sign in</Link></span>
                     </div>
                 </form>
     </section>

@@ -3,11 +3,12 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export const BlogCard = () => {
+export const BlogCard = ({id}: {id:string}) => {
   return (
     <>
     <section className="flex w-full flex-col items-center p-4">
         <article className="bg-white flex flex-col w-full max-w-7xl rounded-lg shadow-lg p-10 mb-5 space-y-3">
+            {id}
             <div className="w-full flex justify-center">
             <Image
                 src="https://res.cloudinary.com/dxuntrrfo/image/upload/v1753107010/samples/smile.jpg"
@@ -36,7 +37,7 @@ export const BlogCard = () => {
             </p>
         </article>
         <div className='w-full max-w-7xl my-3'>
-            <Link href={'#'} className='group self-start w-fit bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md font-semibold cursor-pointer flex items-center gap-2'>
+            <Link href={'/personal-blogs'} className='group self-start w-fit bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md font-semibold cursor-pointer flex items-center gap-2'>
                 <ArrowLeft className="inline-block group-hover:-translate-x-1 transition-all duration-300 ease-in" size={18} />
                 Go Back List Of Blogs
             </Link>

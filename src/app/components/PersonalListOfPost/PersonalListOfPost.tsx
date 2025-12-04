@@ -6,9 +6,9 @@ export const PersonalListOfPost = () => {
   return (
     <>
      <section className='mx-auto w-full flex flex-col justify-center items-center p-8'>
-        <div className='flex w-full gap-4 max-w-7xl  sm:justify-between items-center flex-wrap bg-gradient-to-r from-purple-100 via-white to-purple-100 p-6 rounded-lg shadow-md mb-4'>
-          <span className='text-4xl font-bold tracking-tight'>My Blog Posts</span>
-          <Link href='#' className='group flex items-center gap-2 bg-purple-700 hover:bg-purple-600 touch-manipulation active:bg-purple-800 transition-colors text-white font-semibold rounded-md px-6 py-4 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400'><CirclePlus className='inline-block mr-2 group-hover:scale-110 transition-transform' />Create New Post</Link>
+        <div className="mb-6 flex justify-between items-center w-full max-w-7xl bg-white rounded-lg shadow-sm p-4">
+          <span className='text-xl font-semibold text-gray-700'>My Blog Posts</span>
+          <Link href='/personal-blogs/create' className='group flex items-center gap-2 bg-purple-700 hover:bg-purple-600 touch-manipulation active:bg-purple-800 transition-colors text-white font-semibold rounded-md px-4 py-2 shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400'><CirclePlus className='inline-block mr-2 group-hover:scale-110 transition-transform' />Create New Post</Link>
         </div>
         <div className='flex w-full max-w-7xl overflow-x-auto rounded-lg'>
               <table className='min-w-[600px] w-full border-collapse border border-gray-400 table-auto md:table-fixed'>
@@ -32,7 +32,7 @@ export const PersonalListOfPost = () => {
                           <Link href="#" className='p-2 rounded hover:bg-purple-100 touch-manipulation active:bg-purple-100 transition-colors' title="Edit">
                             <Pencil className='inline-block text-purple-700 hover:scale-110 transition-transform' size={20} />
                           </Link>
-                          <Link href="#" className='p-2 rounded hover:bg-blue-100 touch-manipulation active:bg-blue-100 transition-colors' title="View">
+                          <Link href="/personal-blogs/1" className='p-2 rounded hover:bg-blue-100 touch-manipulation active:bg-blue-100 transition-colors' title="View">
                             <Eye className='inline-block text-blue-700 hover:scale-110 transition-transform' size={20} />
                           </Link>
                           <Link href="#" className='p-2 rounded hover:bg-red-100 touch-manipulation active:bg-red-100 transition-colors' title="Delete">

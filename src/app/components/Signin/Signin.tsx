@@ -29,10 +29,10 @@ export const Signin = () => {
                     </div>
                     <div className='flex flex-col space-y-5'>
                         <span className='text-right'>
-                        <Link href={'#'} className='text-blue-600 hover:text-blue-500 cursor-pointer' >Forgot Password?</Link>
+                        <Link href={'/signin/forgot-password'} className='text-blue-600 hover:text-blue-500 cursor-pointer' >Forgot Password?</Link>
                         </span>
                         <button type='submit' className=' bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-500 cursor-pointer'>Log In</button>
-                        <span className='text-center'>Don&apos;t have an account? <Link href={'#'} className='text-blue-600 hover:text-blue-500 cursor-pointer' >Sign Up</Link></span>
+                        <span className='text-center'>Don&apos;t have an account? <Link href={'/signup'} className='text-blue-600 hover:text-blue-500 cursor-pointer' >Sign Up</Link></span>
                     </div>
                 </form>
     </section>

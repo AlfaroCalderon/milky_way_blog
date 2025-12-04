@@ -26,7 +26,7 @@ export const CreationBlogForm = () => {
                         <select
                             id="category"
                             className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 w-full hover:border-blue-400 hover:bg-blue-50 text-gray-700 font-medium">
-                            <option value="" disabled selected>
+                            <option value=""  selected>
                                 Select a category
                             </option>
                             <option value="technology">Technology</option>
