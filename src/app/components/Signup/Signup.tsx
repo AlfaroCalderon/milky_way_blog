@@ -30,7 +30,7 @@ export const Signup = () => {
     },[mutation.isSuccess, mutation.isError]);
 
     const onSubmit = (data: Inputs) => {
-        console.log(data);
+
         mutation.mutate({
                 name: data.name,
                 lastname: data.lastname,
@@ -39,7 +39,7 @@ export const Signup = () => {
                 password_confirmation: data.password_confirmation
             }
         );
-        console.log(mutation.data);
+        
     }
 
   return (
@@ -137,7 +137,7 @@ export const Signup = () => {
                         <label htmlFor="confirmPassword" className='text-sm font-medium text-gray-700'>Confirm Password</label>
                         <div className='relative'>
                         <Lock className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400' size={20} />
-                        <input type="password" {...register("password_confirmation", {required:'Confirm password required', pattern:{value:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])([^\s]{8,64})$/, message: "Invalid password. Requirements: at least one lowercase letter, one uppercase letter, one digit, one special character, no whitespace, length 8–64 characters."}})} placeholder='Re-enter your password' id='confirmPassword' className='pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 w-full'/>
+                        <input type="password" {...register("password_confirmation", {required:'Confirm password required', pattern:{value:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])([^\s]{8,64})$/, message: "Invalid password. Requirements: at least one lowercase letter, one uppercase letter, one digit, one special character, no whitespace, length 8–64 characters."}, validate: value => value === watch("password") || "Passwords don't match"})} placeholder='Re-enter your password' id='confirmPassword' className='pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 w-full'/>
                         </div>
                         {errors.password_confirmation && (
                                 <span className='text-red-400 font-bold'>{errors.password_confirmation?.message}</span>
