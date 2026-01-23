@@ -21,12 +21,16 @@ export const Signup = () => {
     const mutation = useMutation({mutationFn: (data: Inputs) => createUser({ data })});
 
      useEffect(() => {
+        if (mutation.isSuccess) {
+            reset();
+        }
         setTimeout(() => {
             mutation.reset();
-        },3000);
+        },8000);
     },[mutation.isSuccess, mutation.isError]);
 
     const onSubmit = (data: Inputs) => {
+        console.log(data);
         mutation.mutate({
                 name: data.name,
                 lastname: data.lastname,
@@ -35,9 +39,9 @@ export const Signup = () => {
                 password_confirmation: data.password_confirmation
             }
         );
-        reset();
         console.log(mutation.data);
     }
+
   return (
     <>
     {
@@ -56,7 +60,27 @@ export const Signup = () => {
         mutation.isError && (
             <div className='fixed z-50 m-2 px-7 py-3 bg-red-300 rounded-lg'>
                 <span>
-                 {mutation.error.message}
+                {
+                    // Safely access error messages for each field, fallback to generic error if not present
+                    (() => {
+                        const error = mutation.error as any;
+                        const messages = error?.response?.data?.message;
+                        if (messages && typeof messages === 'object') {
+                            return (
+                                <ul className="list-disc pl-5">
+                                    {Object.entries(messages).map(([field, errs]: [string, any]) =>
+                                        Array.isArray(errs)
+                                            ? errs.map((msg: string, idx: number) => (
+                                                <li key={`${field}-${idx}`}>{msg}</li>
+                                            ))
+                                            : null
+                                    )}
+                                </ul>
+                            );
+                        }
+                        return "An error occurred";
+                    })()
+                }
                 </span>
             </div>
         )
