@@ -27,7 +27,7 @@ export const Signup = () => {
         setTimeout(() => {
             mutation.reset();
         },8000);
-    },[mutation.isSuccess, mutation.isError]);
+    }, [mutation.isSuccess, mutation.isError, mutation, reset]);
 
     const onSubmit = (data: Inputs) => {
 
@@ -117,7 +117,7 @@ export const Signup = () => {
                         <label htmlFor="email" className='text-sm font-medium text-gray-700'>Email Address</label>
                         <div className='relative'>
                             <Mail className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400' size={20}/>
-                            <input type="email" {...register( "email", {required:'Email name required', pattern:{value:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: "Invalid email address. Please provide a valid email"}})} id='email' placeholder='you@example.com' className='pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 w-full'/>
+                            <input type="email" {...register( "email", {required:'Email required', pattern:{value:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: "Invalid email address. Please provide a valid email"}})} id='email' placeholder='you@example.com' className='pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 w-full'/>
                         </div>
                         {errors.email && (
                                 <span className='text-red-400 font-bold'>{errors.email?.message}</span>

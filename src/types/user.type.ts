@@ -5,3 +5,9 @@ export type UserType = {
     password:string
     password_confirmation:string
 }
+
+
+export type UserLogin = {
+    email:string
+    password:string
+}
