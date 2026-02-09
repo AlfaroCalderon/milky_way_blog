@@ -27,7 +27,7 @@ export const Signup = () => {
         setTimeout(() => {
             mutation.reset();
         },8000);
-    }, [mutation.isSuccess, mutation.isError, mutation, reset]);
+    }, [mutation.isSuccess, mutation.isError,reset]);
 
     const onSubmit = (data: Inputs) => {
 
@@ -60,13 +60,15 @@ export const Signup = () => {
         mutation.isError && (
             <div className='fixed z-50 m-2 px-7 py-3 bg-red-300 rounded-lg'>
                 <span>
+                {/* Safely access error messages for each field, fallback to generic error if not present */}
                 {
-                    // Safely access error messages for each field, fallback to generic error if not present
                     (() => {
                         const error = mutation.error as any;
                         const messages = error?.response?.data?.message;
+                        console.log(mutation);
                         if (messages && typeof messages === 'object') {
                             return (
+                                <>
                                 <ul className="list-disc pl-5">
                                     {Object.entries(messages).map(([field, errs]: [string, any]) =>
                                         Array.isArray(errs)
@@ -76,6 +78,7 @@ export const Signup = () => {
                                             : null
                                     )}
                                 </ul>
+                                </>
                             );
                         }
                         return "An error occurred";

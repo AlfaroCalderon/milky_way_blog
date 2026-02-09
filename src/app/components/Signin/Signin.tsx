@@ -29,7 +29,7 @@ export const Signin = () => {
             mutation.reset();
         }, 4000)
 
-    }, [mutation.isSuccess, mutation.isError]);
+    }, [mutation.isSuccess, mutation.isError, reset]);
 
     const onSubmit = (data:InputType) => {
 
@@ -45,12 +45,26 @@ export const Signin = () => {
     <>
     {
         mutation.isSuccess && (
-            <div
-                className={`fixed z-50 m-2 px-7 py-3 bg-green-300 rounded-lg`}
-            >
+            <div className={`fixed z-50 m-2 px-7 py-3 bg-green-300 rounded-lg`} >
                 <span>
                     {mutation.data?.data?.message}
                 </span>
+            </div>
+        )
+    }
+
+    {
+        mutation.isError && (
+            <div  className={`fixed z-50 m-2 px-7 py-3 bg-red-300 rounded-lg`}>
+                {
+                    (() => {
+                        
+                        const error = mutation.error as any;
+                        const message = error?.response?.data?.message;
+
+                        return message;
+                    })()
+                }
             </div>
         )
     }
