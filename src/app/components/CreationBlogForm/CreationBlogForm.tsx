@@ -2,8 +2,21 @@
 import { Rocket } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
+import { useForm } from 'react-hook-form'
+
+type InputType = {
+       posttitle:string,
+       summary:string,
+       category:string,
+       author:string,
+       content:string,
+       img:string
+}
 
 export const CreationBlogForm = () => {
+
+       const {register, handleSubmit, watch, formState:{errors}} = useForm<InputType>();
+
   return (
     <>
     <section className='mx-auto w-full flex justify-center items-center p-8'>

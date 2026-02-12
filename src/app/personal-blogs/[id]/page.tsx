@@ -1,7 +1,7 @@
 import React from 'react'
 import { BlogCard } from '@/app/components'
 
-const page = async ({params}:{ params:Promise<{id:string}>}) => {
+const Page = async ({params}:{ params:Promise<{id:string}>}) => {
 
     const {id} = await params;
 
@@ -12,4 +12,4 @@ const page = async ({params}:{ params:Promise<{id:string}>}) => {
   )
 }
 
-export default page
+export default Page

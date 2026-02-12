@@ -1,6 +1,6 @@
 'use client'
 import { sigin } from '@/services/user.service'
-import { Mutation, useMutation } from '@tanstack/react-query'
+import {useMutation } from '@tanstack/react-query'
 import { Mail, UserRound, Lock } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
@@ -24,7 +24,9 @@ export const Signin = () => {
 
         setTimeout(() => {
             if(mutation.isSuccess){
-             window.location.href = '/blogs'; // Replace '/' with your desired redirect URL
+              localStorage.setItem('access_token',mutation.data?.data?.data?.access_token);
+              localStorage.setItem('refresh_token',mutation.data?.data?.data?.refresh_token);
+              window.location.href = '/blogs'; 
             }
             mutation.reset();
         }, 4000)
