@@ -1,7 +1,14 @@
-import { CreationBlogForm } from '@/app/components'
+'use client'
+import { CreationBlogForm, LoadingSpinner } from '@/app/components'
+import { useAuthGuard } from '@/utilities/useAuthGuard';
 import React from 'react'
 
-const page = () => {
+const Page = () => {
+  const authChecked = useAuthGuard();
+        
+    if(!authChecked){
+       return  <LoadingSpinner />
+    }
   return (
     <>
     <CreationBlogForm />
@@ -9,4 +16,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

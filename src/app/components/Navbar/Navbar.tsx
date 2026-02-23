@@ -23,6 +23,11 @@ export const Navbar = () => {
     }
   } 
 
+  const logout = () => {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+  }
+
   
   return (
     <nav className="flex flex-col bg-white lg:flex-row lg:justify-between lg:items-center border-gray-100 sticky top-0 z-50 p-5 shadow-md">
@@ -45,7 +50,7 @@ export const Navbar = () => {
         </span>
         <span className='menu-items hidden lg:flex lg:flex-row lg:space-x-4'>
             {isLogged && (
-                <Link href={'/'} className='block py-3 px-7 mb-2 lg:mb-0 text-red-600 hover:bg-red-500 hover:text-white rounded-md hover:scale-105 hover:shadow-md transition-all duration-300 ease-in-out touch-manipulation active:scale-95 active:bg-red-200'><LogOut className='inline-block mr-3'/>Log out</Link>
+                <Link href={'/blogs'} onClick={logout} className='block py-3 px-7 mb-2 lg:mb-0 text-red-600 hover:bg-red-500 hover:text-white rounded-md hover:scale-105 hover:shadow-md transition-all duration-300 ease-in-out touch-manipulation active:scale-95 active:bg-red-200'><LogOut className='inline-block mr-3'/>Log out</Link>
             )}
             {!isLogged && (
               <>

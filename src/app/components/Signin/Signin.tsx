@@ -5,6 +5,7 @@ import { Mail, UserRound, Lock } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { sileo } from "sileo";
 
 type InputType = {
     email:string
@@ -18,8 +19,26 @@ export const Signin = () => {
 
 
     useEffect(() => {
+
         if(mutation.isSuccess){
+            sileo.success({
+                title: mutation.data?.data?.message,
+                fill: "black",
+                styles: {
+                    title: "text-green"
+                }
+             })
             reset()
+        }
+
+        if(mutation.isError){
+            sileo.error({
+                title: mutation.error?.response?.data?.message,
+                fill: "black",
+                styles: {
+                    title: "text-red"
+                }
+            })
         }
 
         setTimeout(() => {
@@ -45,31 +64,6 @@ export const Signin = () => {
 
   return (
     <>
-    {
-        mutation.isSuccess && (
-            <div className={`fixed z-50 m-2 px-7 py-3 bg-green-300 rounded-lg`} >
-                <span>
-                    {mutation.data?.data?.message}
-                </span>
-            </div>
-        )
-    }
-
-    {
-        mutation.isError && (
-            <div  className={`fixed z-50 m-2 px-7 py-3 bg-red-300 rounded-lg`}>
-                {
-                    (() => {
-                        
-                        const error = mutation.error as any;
-                        const message = error?.response?.data?.message;
-
-                        return message;
-                    })()
-                }
-            </div>
-        )
-    }
      <section className='mx-auto w-full flex justify-center items-center p-8'>
                 <form action="#" onSubmit={handleSubmit(onSubmit)} className='w-full max-w-md flex flex-col space-y-7 bg-linear-to-br from-white to-blue-50 border border-gray-200 rounded-xl p-8 shadow-xl transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl backdrop-blur-sm'>
                     <div className='flex flex-col items-center justify-center space-y-3'>

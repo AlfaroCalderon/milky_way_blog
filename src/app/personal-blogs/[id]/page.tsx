@@ -1,15 +1,23 @@
+'use client'
 import React from 'react'
-import { BlogCard } from '@/app/components'
+import { BlogCard, LoadingSpinner } from '@/app/components'
+import { useAuthGuard } from '@/utilities/useAuthGuard'
+import { useParams } from 'next/navigation'
 
-const Page = async ({params}:{ params:Promise<{id:string}>}) => {
+const Page = () => {
+    const params = useParams();
+    const id = params.id as string;
+    const authChecked = useAuthGuard();
 
-    const {id} = await params;
+    if (!authChecked) {
+        return <LoadingSpinner />;
+    }
 
-  return (
-    <>
-    <BlogCard id={id} />
-    </>
-  )
+    return (
+        <>
+            <BlogCard id={id} />
+        </>
+    );
 }
 
-export default Page
+export default Page;

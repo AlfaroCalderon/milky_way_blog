@@ -1,12 +1,13 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { validateAccessToken } from '@/services/user.service'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuthStore } from '@/store/useAuthStore'
 
 export const useAuthGuard = () => {
   const router = useRouter();
   const setLoggedIn = useAuthStore(state => state.setIsLogged)
+  const [authCheked, setAuthChecked] = useState(false);
 
   useEffect(() => {
 
@@ -29,9 +30,13 @@ export const useAuthGuard = () => {
         }else{
             setLoggedIn(true);
         }
+
+        setAuthChecked(true);
     };
 
     checkAuth();
 
   }, [router, setLoggedIn])
+
+  return authCheked;
 }

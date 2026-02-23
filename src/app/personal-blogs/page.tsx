@@ -1,7 +1,14 @@
+'use client'
 import React from 'react'
-import { PersonalListOfPost } from '../components'
+import { LoadingSpinner, PersonalListOfPost } from '../components'
+import { useAuthGuard } from "@/utilities/useAuthGuard"
 
-const page = () => {
+const Page = () => {
+  const authChecked = useAuthGuard();
+      
+  if(!authChecked){
+     return  <LoadingSpinner />
+  }
   return (
     <>
     <PersonalListOfPost />
@@ -9,4 +16,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
