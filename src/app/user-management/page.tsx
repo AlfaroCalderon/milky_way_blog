@@ -1,10 +1,18 @@
+'use client'
 import React from 'react'
-import { UserManagement } from '../components'
+import {  LoadingSpinner, UserManagement } from '../components'
+import { useAuthGuardLogged } from '@/utilities/useAuthGuard'
 
-const page = () => {
+const Page = () => {
+  const authChecked = useAuthGuardLogged();
+          
+      if(!authChecked){
+         return  <LoadingSpinner />
+      }
+
   return (
     <UserManagement />
   )
 }
 
-export default page
+export default Page

@@ -1,8 +1,9 @@
 'use client'
 import { BlogList, LoadingSpinner } from "@/app/components";
-import { useAuthGuard } from "@/utilities/useAuthGuard"
+import { useAuthGuardNotLogged } from "@/utilities/useAuthGuard"
 
 const Page = () => {
+    useAuthGuardNotLogged();
     return(
        <>
        <BlogList />

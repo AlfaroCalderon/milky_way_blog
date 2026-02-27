@@ -1,10 +1,10 @@
 'use client'
 import React from 'react'
 import { LoadingSpinner, PersonalListOfPost } from '../components'
-import { useAuthGuard } from "@/utilities/useAuthGuard"
+import { useAuthGuardLogged } from "@/utilities/useAuthGuard"
 
 const Page = () => {
-  const authChecked = useAuthGuard();
+  const authChecked = useAuthGuardLogged();
       
   if(!authChecked){
      return  <LoadingSpinner />
