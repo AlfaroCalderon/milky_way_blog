@@ -23,10 +23,18 @@ export const useAuthGuardLogged = () => {
         const isvalid = await validateAccessToken();
 
         if(!isvalid){
-            localStorage.removeItem('access_token');
-            localStorage.removeItem("refresh_token");
-            setLoggedIn(false);
-            router.replace('/signin')
+            const newAccessToken = await validateRefreshToken();
+
+            if(!newAccessToken){
+              localStorage.removeItem('access_token');
+              localStorage.removeItem("refresh_token");
+              setLoggedIn(false);
+              router.replace('/signin')
+            }else{
+              setLoggedIn(true);
+              localStorage.setItem('access_token', newAccessToken?.data?.access_token)
+            }
+            
         }else{
             setLoggedIn(true);
         }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Signin } from '../components'
-import { sileo, Toaster } from "sileo";
+import { Toaster } from 'sileo';
 
 const page = () => {
   return (

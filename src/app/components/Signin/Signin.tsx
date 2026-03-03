@@ -1,11 +1,13 @@
 'use client'
 import { sigin } from '@/services/user.service'
 import {useMutation } from '@tanstack/react-query'
-import { Mail, UserRound, Lock } from 'lucide-react'
+import { Mail, Lock } from 'lucide-react'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { jwtDecode } from "jwt-decode";
 import { sileo } from "sileo";
+import { useIdUser } from '@/store/useAuthStore'
 
 type InputType = {
     email:string
@@ -16,7 +18,7 @@ export const Signin = () => {
 
     const {register, handleSubmit, watch, formState: {errors}, reset} = useForm<InputType>();
     const mutation = useMutation({mutationFn: (data:InputType) => sigin({data})});
-
+    const setId = useIdUser((value) => value.setId);
 
     useEffect(() => {
 
@@ -32,6 +34,7 @@ export const Signin = () => {
         }
 
         if(mutation.isError){
+
             sileo.error({
                 title: mutation.error?.response?.data?.message,
                 fill: "black",
@@ -45,6 +48,8 @@ export const Signin = () => {
             if(mutation.isSuccess){
               localStorage.setItem('access_token',mutation.data?.data?.data?.access_token);
               localStorage.setItem('refresh_token',mutation.data?.data?.data?.refresh_token);
+              const decoded: { user_id?: string; [key: string]: any } = jwtDecode(mutation.data?.data?.data?.access_token);
+              setId(Number(decoded.user_id));
               window.location.href = '/blogs'; 
             }
             mutation.reset();

@@ -4,8 +4,9 @@ import {useForm} from 'react-hook-form'
 import {createUser} from '@/services/user.service'
 import {useMutation} from '@tanstack/react-query'
 import Link from 'next/link'
-import { json } from 'stream/consumers'
 import { useEffect } from 'react'
+import { sileo } from 'sileo'
+import type { AxiosError } from 'axios'
 
 type Inputs = {
     name:string
@@ -20,14 +21,50 @@ export const Signup = () => {
     const {register, handleSubmit, watch, formState:{ errors }, reset } = useForm<Inputs>();
     const mutation = useMutation({mutationFn: (data: Inputs) => createUser({ data })});
 
-     useEffect(() => {
+    useEffect(() => {
         if (mutation.isSuccess) {
+            sileo.success({
+                title: mutation.data?.data?.message,
+                fill: "black",
+                styles: {
+                    title: "text-green"
+                }
+            });
             reset();
         }
-        setTimeout(() => {
-            mutation.reset();
-        },8000);
-    }, [mutation.isSuccess, mutation.isError,reset]);
+
+        if (mutation.isError) {
+            const error = mutation.error as AxiosError<{ message: { email?: string[] } }>;
+            const messages = error?.response?.data?.message;
+            let allMessages = '';
+
+            if (messages) {
+                Object.entries(messages).forEach(([_, errs]) => {
+                    if (Array.isArray(errs)) {
+                        errs.forEach((msg: string) => {
+                            allMessages += msg + '\n';
+                        });
+                    }
+                });
+            }
+            console.log(allMessages);
+
+            sileo.error({
+                title: "Something went wrong",
+                description: allMessages,
+                fill: "black",
+                styles: {
+                    title: "text-red-600",
+                    description: "text-red-600"
+                }
+            });
+        }
+
+         setTimeout(() => {
+                mutation.reset();
+         }, 8000);
+
+    }, [mutation.isSuccess, mutation.isError, reset]);
 
     const onSubmit = (data: Inputs) => {
 
@@ -44,50 +81,6 @@ export const Signup = () => {
 
   return (
     <>
-    {
-        mutation.isSuccess && (
-            <div
-                className={`fixed z-50 m-2 px-7 py-3 bg-green-300 rounded-lg`}
-            >
-                <span>
-                    {mutation.data?.data?.message}
-                </span>
-            </div>
-        )
-    }
-
-    {
-        mutation.isError && (
-            <div className='fixed z-50 m-2 px-7 py-3 bg-red-300 rounded-lg'>
-                <span>
-                {/* Safely access error messages for each field, fallback to generic error if not present */}
-                {
-                    (() => {
-                        const error = mutation.error as any;
-                        const messages = error?.response?.data?.message;
-                        console.log(mutation);
-                        if (messages && typeof messages === 'object') {
-                            return (
-                                <>
-                                <ul className="list-disc pl-5">
-                                    {Object.entries(messages).map(([field, errs]: [string, any]) =>
-                                        Array.isArray(errs)
-                                            ? errs.map((msg: string, idx: number) => (
-                                                <li key={`${field}-${idx}`}>{msg}</li>
-                                            ))
-                                            : null
-                                    )}
-                                </ul>
-                                </>
-                            );
-                        }
-                        return "An error occurred";
-                    })()
-                }
-                </span>
-            </div>
-        )
-    }
     
     <section className='mx-auto w-full flex justify-center items-center p-8'>
                 <form action="#" onSubmit={handleSubmit(onSubmit)} className='w-full max-w-md flex flex-col space-y-7 bg-gradient-to-br from-white to-blue-50 border border-gray-200 rounded-xl p-8 shadow-xl transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl backdrop-blur-sm'>

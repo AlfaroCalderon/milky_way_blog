@@ -1,5 +1,6 @@
 import {ApiBlog} from '@/api/blog.api';
 import { UserType, UserLogin } from '@/types/user.type';
+import { BlogPost } from '@/types/blogPost.type'
 
 export const createUser = async({data}: {data:UserType}): Promise<object|never> => {
         const response = await ApiBlog.post('user/signup', data, {
@@ -64,6 +65,23 @@ export const validateRefreshToken = async (): Promise<boolean | object> => {
 
         return response;
         
+    } catch (error) {
+        return false;
+    }
+}
+
+
+export const postData = async ({data}:{data:BlogPost}): Promise<BlogPost | boolean> => {
+    try {
+        const response = await ApiBlog.post('blog/management/create', data, {
+            headers: {
+                "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
+                "Authorization": 'bearer '+localStorage.getItem('access_token')
+            }
+        });
+
+        return response.data
+
     } catch (error) {
         return false;
     }
