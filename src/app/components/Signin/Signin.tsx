@@ -19,6 +19,8 @@ export const Signin = () => {
     const {register, handleSubmit, watch, formState: {errors}, reset} = useForm<InputType>();
     const mutation = useMutation({mutationFn: (data:InputType) => sigin({data})});
     const setId = useIdUser((value) => value.setId);
+    const setName = useIdUser((value) => value.setName);
+    const setLastName = useIdUser((value) => value.setLastname);
 
     useEffect(() => {
 
@@ -48,8 +50,10 @@ export const Signin = () => {
             if(mutation.isSuccess){
               localStorage.setItem('access_token',mutation.data?.data?.data?.access_token);
               localStorage.setItem('refresh_token',mutation.data?.data?.data?.refresh_token);
-              const decoded: { user_id?: string; [key: string]: any } = jwtDecode(mutation.data?.data?.data?.access_token);
+              const decoded: { user_id?: string;  user_name?: string; user_lastname?: string; [key: string]: any } = jwtDecode(mutation.data?.data?.data?.access_token);
               setId(Number(decoded.user_id));
+              setName(decoded.user_name ?? '');
+              setLastName(decoded.user_lastname ?? '');
               window.location.href = '/blogs'; 
             }
             mutation.reset();

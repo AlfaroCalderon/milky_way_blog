@@ -4,6 +4,9 @@ import { Rocket } from 'lucide-react'
 import { postData } from '@/services/user.service'
 import { useForm } from 'react-hook-form'
 import { useIdUser } from '@/store/useAuthStore'
+import { useEffect } from 'react'
+import { sileo } from 'sileo'
+import { useRouter } from 'next/navigation'
 
 type InputType = {
        posttitle:string,
@@ -16,8 +19,11 @@ type InputType = {
 
 export const CreationBlogForm = () => {
        
-       const {register, handleSubmit, watch, formState:{errors}} = useForm<InputType>();
-       const useId = useIdUser((value) => value.id );
+       const {register, handleSubmit, watch, formState:{errors}, reset} = useForm<InputType>();
+       const useId = useIdUser((value) => value.id);
+       const useName = useIdUser((value) => value.name);
+       const useLastname = useIdUser((value) => value.lastname);
+       const route  = useRouter();
        const mutation = useMutation({
               mutationFn: (data: InputType) => {
                      // Map InputType to BlogPost
@@ -28,11 +34,61 @@ export const CreationBlogForm = () => {
                             category: data.category,
                             author: data.author,
                             main_content: data.content,
-                            img_url: data.img
+                            img_url: data.img ?? ''
                      };
                      return postData({ data: mappedData });
               }
        });
+
+       useEffect(() => {
+
+              if(mutation.isSuccess){
+                reset()
+                sileo.success({
+                     title: "The post has been uploaded",
+                     fill: "black",
+                     styles: {
+                        title: "text-green"
+                     }
+                });
+              }
+
+              if(mutation.isError){
+               const error = mutation.error;
+               const messages = error?.response?.data?.message;
+               let allMessages = '';
+              
+               if (messages) {
+                   Object.entries(messages).forEach(([_, errs]) => {
+                       if (Array.isArray(errs)) {
+                           errs.forEach((msg: string) => {
+                               allMessages += msg + '\n';
+                           });
+                       }
+                   });
+               }
+               console.log(allMessages);
+
+                sileo.error({
+                     title: "An error has arisen",
+                     description: allMessages,
+                     fill: "black",
+                     styles: {
+                            title: "text-red-600",
+                            description: "text-red-600"
+                     }
+                })
+              }
+
+
+              setTimeout( () => {
+                  if(mutation.isSuccess){
+                     route.replace('/personal-blogs');
+                  }
+                  mutation.reset();
+              }, 7300)
+
+       }, [mutation.isSuccess, mutation.isError, reset]);
 
        const onSubmit = (data: InputType) => {
               console.log(useId);
@@ -96,6 +152,7 @@ export const CreationBlogForm = () => {
                                    type="text"
                                    id='author'
                                    placeholder='Your name'
+                                   value={useName+' '+useLastname}
                                    disabled
                                    className='px-4 cursor-not-allowed py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 w-full'
                                    {...register('author')}
@@ -124,10 +181,8 @@ export const CreationBlogForm = () => {
                             className='px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 w-full'
                             {...register('img', {
                                    required: false,
-                                   pattern: {
-                                          value: /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))$/i,
-                                          message: 'Please enter a valid image URL'
-                                   }
+                                   validate: (value) =>
+                                   !value || /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg))$/i.test(value) || 'Please enter a valid image URL'
                             })}
                       />
                       {errors.img && <span className="text-red-500 text-xs">{errors.img.message}</span>}

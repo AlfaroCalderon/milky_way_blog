@@ -72,7 +72,6 @@ export const validateRefreshToken = async (): Promise<boolean | object> => {
 
 
 export const postData = async ({data}:{data:BlogPost}): Promise<BlogPost | boolean> => {
-    try {
         const response = await ApiBlog.post('blog/management/create', data, {
             headers: {
                 "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
@@ -81,8 +80,4 @@ export const postData = async ({data}:{data:BlogPost}): Promise<BlogPost | boole
         });
 
         return response.data
-
-    } catch (error) {
-        return false;
-    }
 }
