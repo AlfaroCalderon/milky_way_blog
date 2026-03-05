@@ -71,13 +71,3 @@ export const validateRefreshToken = async (): Promise<boolean | object> => {
 }
 
 
-export const postData = async ({data}:{data:BlogPost}): Promise<BlogPost | boolean> => {
-        const response = await ApiBlog.post('blog/management/create', data, {
-            headers: {
-                "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
-                "Authorization": 'bearer '+localStorage.getItem('access_token')
-            }
-        });
-
-        return response.data
-}

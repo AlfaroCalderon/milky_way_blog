@@ -1,7 +1,7 @@
 'use client'
 import { useMutation } from '@tanstack/react-query'
 import { Rocket } from 'lucide-react'
-import { postData } from '@/services/user.service'
+import { postData } from '@/services/post.service'
 import { useForm } from 'react-hook-form'
 import { useIdUser } from '@/store/useAuthStore'
 import { useEffect } from 'react'

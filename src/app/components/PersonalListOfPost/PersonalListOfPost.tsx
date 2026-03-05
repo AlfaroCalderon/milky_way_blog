@@ -1,8 +1,18 @@
+'use client'
 import { CirclePlus, Eye, Pencil, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import { useIdUser } from '@/store/useAuthStore'
+import {  getAllUserPosts } from '@/services/post.service'
+import { useQuery } from '@tanstack/react-query'
 
 export const PersonalListOfPost = () => {
+  const useId =  useIdUser((value) => value.id);
+  const queryData = useQuery({
+    queryKey: ['post' + useId],
+    queryFn: (useId) => getAllUserPosts({ id: useId })
+  });
+
+  console.log(queryData.data);
   return (
     <>
      <section className='mx-auto w-full flex flex-col justify-center items-center p-8'>
