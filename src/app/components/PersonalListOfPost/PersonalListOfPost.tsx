@@ -2,17 +2,25 @@
 import { CirclePlus, Eye, Pencil, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useIdUser } from '@/store/useAuthStore'
-import {  getAllUserPosts } from '@/services/post.service'
-import { useQuery } from '@tanstack/react-query'
+import {  getAllUserPosts, deletePost } from '@/services/post.service'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 export const PersonalListOfPost = () => {
   const useId =  useIdUser((value) => value.id);
+  const userIdNumber = Number(useId);
   const queryData = useQuery({
-    queryKey: ['post' + useId],
-    queryFn: (useId) => getAllUserPosts({ id: useId })
+    queryKey: ['post' + userIdNumber],
+    queryFn: () => getAllUserPosts({ id: userIdNumber })
   });
 
-  console.log(queryData.data);
+  const mutation = useMutation({mutationFn: (id:number) => deletePost({id})});
+
+  const deletPost = (id:number) => {
+      mutation.mutate(id);
+  }
+
+  const list_of_posts = queryData.data?.data.data;
+  console.log(queryData.data?.data.data);
   return (
     <>
      <section className='mx-auto w-full flex flex-col justify-center items-center p-8'>
@@ -32,25 +40,52 @@ export const PersonalListOfPost = () => {
                   </tr>
                 </thead>
                 <tbody className='bg-white'>
-                  <tr>
-                      <td className='border border-gray-300 font-bold p-2'>Finding Simple Joy in the Everyday</td>
-                      <td className='border border-gray-300 p-2'>Lifestyle</td>
-                      <td className='border border-gray-300 p-2'>Sam Wilson</td>
-                      <td className='border border-gray-300 p-2'><span className='text-left text-sm px-4 py-1 bg-green-500 text-white w-fit inline rounded-full'>Published</span></td>
-                      <td className='border border-gray-300 p-2'>
-                        <div className='flex gap-3'>
-                          <Link href="#" className='p-2 rounded hover:bg-purple-100 touch-manipulation active:bg-purple-100 transition-colors' title="Edit">
-                            <Pencil className='inline-block text-purple-700 hover:scale-110 transition-transform' size={20} />
-                          </Link>
-                          <Link href="/personal-blogs/1" className='p-2 rounded hover:bg-blue-100 touch-manipulation active:bg-blue-100 transition-colors' title="View">
-                            <Eye className='inline-block text-blue-700 hover:scale-110 transition-transform' size={20} />
-                          </Link>
-                          <Link href="#" className='p-2 rounded hover:bg-red-100 touch-manipulation active:bg-red-100 transition-colors' title="Delete">
-                            <Trash2 className='inline-block text-red-700 hover:scale-110 transition-transform' size={20} />
-                          </Link>
-                        </div>
-                      </td>
-                  </tr>
+                  {
+                    Array.isArray(list_of_posts) && list_of_posts.length > 0 ? (
+                        list_of_posts.map((post: {
+                          id: number;
+                          post_title: string;
+                          category: string;
+                          author: string;
+                          is_active: boolean;
+                        }, idx: number) => (
+                        <tr key={post.id}>
+                            <td className='border border-gray-300 font-bold p-2'>{post.post_title}</td>
+                            <td className='border border-gray-300 p-2'>{post.category}</td>
+                            <td className='border border-gray-300 p-2'>{post.author}</td>
+                            {
+                              post.is_active ?(
+                                <td className='border border-gray-300 p-2'><span className='text-left text-sm px-4 py-1 bg-green-500 text-white w-fit inline rounded-full'>Published</span></td>
+                              ): (
+                                <td className='border border-gray-300 p-2'><span className='text-left text-sm px-4 py-1 bg-red-500 text-white w-fit inline rounded-full'>Inactive</span></td>
+                              )
+                            }
+                            
+                            <td className='border border-gray-300 p-2'>
+                              <div className='flex gap-3'>
+                                <Link href="#" className='p-2 rounded hover:bg-purple-100 touch-manipulation active:bg-purple-100 transition-colors' title="Edit">
+                                  <Pencil className='inline-block text-purple-700 hover:scale-110 transition-transform' size={20} />
+                                </Link>
+                                <Link href={"/personal-blogs/"+post.id} className='p-2 rounded hover:bg-blue-100 touch-manipulation active:bg-blue-100 transition-colors' title="View">
+                                  <Eye className='inline-block text-blue-700 hover:scale-110 transition-transform' size={20} />
+                                </Link>
+                                <button className='p-2 rounded hover:bg-red-100 touch-manipulation active:bg-red-100 transition-colors cursor-pointer' onClick={() => deletPost(post.id)} title="Delete">
+                                  <Trash2 className='inline-block text-red-700 hover:scale-110 transition-transform' size={20} />
+                                </button>
+                              </div>
+                            </td>
+                        </tr>
+                      ))
+
+                    ) : (
+                      <tr>
+                        <td colSpan={5} className="text-center p-4 text-gray-500">
+                          No posts found.
+                        </td>
+                      </tr>
+                    )
+                  } 
+                  
                 </tbody>
               </table>
         </div>

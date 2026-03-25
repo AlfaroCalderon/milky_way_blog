@@ -23,3 +23,15 @@ export const getAllUserPosts = async ({id}:{id:number}):Promise<object> => {
     return reponse.data;
 }
 
+
+
+export const deletePost = async ({id}:{id:number}): Promise<never|boolean> => {
+    const response = await ApiBlog.delete('blog/management/delete/'+id,{
+        headers: {
+            "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
+            "Authorization": 'bearer '+localStorage.getItem('access_token')
+        }
+    });
+
+    return response.data
+}
