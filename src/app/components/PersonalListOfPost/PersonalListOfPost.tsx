@@ -1,9 +1,10 @@
 'use client'
-import { CirclePlus, Eye, Pencil, Trash2 } from 'lucide-react'
+import { CirclePlus, Eye, Pencil, Trash2, Check } from 'lucide-react'
 import Link from 'next/link'
 import { useIdUser } from '@/store/useAuthStore'
-import {  getAllUserPosts, deletePost } from '@/services/post.service'
+import {  getAllUserPosts, deletePost, activatePost } from '@/services/post.service'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 
 export const PersonalListOfPost = () => {
   const useId =  useIdUser((value) => value.id);
@@ -14,9 +15,20 @@ export const PersonalListOfPost = () => {
   });
 
   const mutation = useMutation({mutationFn: (id:number) => deletePost({id})});
+  const activatePostMutation = useMutation({mutationFn: (id:number) => activatePost({id})});
+
+  useEffect(() => {
+    if(mutation.isSuccess || activatePostMutation.isSuccess){
+      queryData.refetch();
+    } 
+  }, [mutation.isSuccess, activatePostMutation.isSuccess]);
 
   const deletPost = (id:number) => {
       mutation.mutate(id);
+  }
+
+  const deactivatePost = (id:number) => {
+    activatePostMutation.mutate(id);
   }
 
   const list_of_posts = queryData.data?.data.data;
@@ -69,9 +81,18 @@ export const PersonalListOfPost = () => {
                                 <Link href={"/personal-blogs/"+post.id} className='p-2 rounded hover:bg-blue-100 touch-manipulation active:bg-blue-100 transition-colors' title="View">
                                   <Eye className='inline-block text-blue-700 hover:scale-110 transition-transform' size={20} />
                                 </Link>
-                                <button className='p-2 rounded hover:bg-red-100 touch-manipulation active:bg-red-100 transition-colors cursor-pointer' onClick={() => deletPost(post.id)} title="Delete">
-                                  <Trash2 className='inline-block text-red-700 hover:scale-110 transition-transform' size={20} />
-                                </button>
+                                {
+                                  post.is_active? (
+                                    <button className='p-2 rounded hover:bg-red-100 touch-manipulation active:bg-red-100 transition-colors cursor-pointer' onClick={() => deletPost(post.id)} title="Delete">
+                                       <Trash2 className='inline-block text-red-700 hover:scale-110 transition-transform' size={20} />
+                                    </button>
+                                  ): (
+                                    <button className='p-2 rounded hover:bg-red-100 touch-manipulation active:bg-red-100 transition-colors cursor-pointer' onClick={() => deactivatePost(post.id)} title="Deactivate">
+                                       <Check className='inline-block text-green-700 hover:scale-110 transition-transform' size={20} />
+                                    </button>
+                                  )
+                                }
+                                
                               </div>
                             </td>
                         </tr>

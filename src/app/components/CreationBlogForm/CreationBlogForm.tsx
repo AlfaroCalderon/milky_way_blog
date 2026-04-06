@@ -34,7 +34,7 @@ export const CreationBlogForm = () => {
                             category: data.category,
                             author: data.author,
                             main_content: data.content,
-                            img_url: data.img ?? ''
+                            img_url: data.img ?? null
                      };
                      return postData({ data: mappedData });
               }
