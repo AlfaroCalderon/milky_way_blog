@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { getUserPost, createComment, getPostComments } from '@/services/post.service'
 import { Comment } from '@/types/blogPost.type'
+import { formatDistanceToNow } from 'date-fns'
 
 
 type Input = {
@@ -20,10 +21,10 @@ export const BlogCard = ({id}: {id:string}) => {
 
     const idPost = Number(id);
     const {register, handleSubmit, watch, formState:{errors}, reset, setValue} = useForm<Input>(); 
-    const {data, isSuccess, isError} = useQuery({queryKey:['post'+idPost], queryFn: () => getUserPost({id: idPost}) });
-    const comments = useQuery({queryKey: ['comments'+idPost], queryFn: () => getPostComments({id: idPost})});
+    const {data, isSuccess, isError} = useQuery({queryKey:['post'+idPost], queryFn: () => getUserPost({id: idPost})});
+    const comments = useQuery({queryKey: ['comments'+idPost], queryFn: () => getPostComments({id: idPost}), refetchInterval: 10000, });
 
-    console.log(comments.data);
+    console.log(comments.data?.data);
     const mutate = useMutation({mutationFn: (data:Comment) => {
         return createComment({comment:data})
     }});
@@ -52,6 +53,7 @@ export const BlogCard = ({id}: {id:string}) => {
 
         setTimeout(() => {
             mutate.reset();
+            comments.refetch();
         }, 7300)
     },[mutate.isSuccess, mutate.isError, reset])
 
@@ -132,14 +134,21 @@ export const BlogCard = ({id}: {id:string}) => {
                     </button>
                  </form> 
             </div>
-            <div className="bg-gray-100 rounded-lg p-4 flex flex-col">
-                <div className="flex items-center space-x-3 mb-2">
-                    <UserRound size={18} className="text-gray-600" />
-                    <span className="font-semibold text-gray-800">John Smith</span>
-                    <span className="text-xs text-gray-400">2 hours ago</span>
-                </div>
-                <p className="text-gray-700">Great post! I really enjoyed reading about finding joy in everyday moments.</p>
-            </div>
+
+            {
+                comments.data?.data.map((comment:object, idx:number) => (
+                    <div className="bg-gray-100 rounded-lg p-4 flex flex-col" key={idx}>
+                        <div className="flex items-center space-x-3 mb-2">
+                            <UserRound size={18} className="text-gray-600" />
+                            <span className="font-semibold text-gray-800">{comment.user.name} {comment.user.lastname}</span>
+                            <span className="text-xs text-gray-400">{formatDistanceToNow(comment.created_at , { addSuffix: true})}</span>
+                        </div>
+                        <p className="text-gray-700">{comment.comment}</p>
+                    </div>
+                ))
+            }
+
+            
         </div>
     </section>
     </>
