@@ -12,6 +12,19 @@ export const postData = async ({data}:{data:BlogPost}): Promise<BlogPost | boole
         return response.data
 }
 
+
+export const modifyPost = async ({data, id}:{data:BlogPost, id:number}): Promise<BlogPost|boolean> => {
+    const response = await ApiBlog.patch('blog/management/update/'+id, data, {
+        headers:{
+            "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
+            "Authorization": 'bearer '+localStorage.getItem('access_token')
+        }
+    })
+
+    return response.data;
+}
+
+
 export const getAllUserPosts = async ({id}:{id:number}):Promise<object> => {
     const reponse = await ApiBlog.get('blog/management/user_posts/'+id,{
         headers: {

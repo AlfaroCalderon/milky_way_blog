@@ -32,7 +32,6 @@ export const PersonalListOfPost = () => {
   }
 
   const list_of_posts = queryData.data?.data.data;
-  console.log(queryData.data?.data.data);
   return (
     <>
      <section className='mx-auto w-full flex flex-col justify-center items-center p-8'>
@@ -75,7 +74,7 @@ export const PersonalListOfPost = () => {
                             
                             <td className='border border-gray-300 p-2'>
                               <div className='flex gap-3'>
-                                <Link href="#" className='p-2 rounded hover:bg-purple-100 touch-manipulation active:bg-purple-100 transition-colors' title="Edit">
+                                <Link href={"/personal-blogs/modify/"+post.id} className='p-2 rounded hover:bg-purple-100 touch-manipulation active:bg-purple-100 transition-colors' title="Edit">
                                   <Pencil className='inline-block text-purple-700 hover:scale-110 transition-transform' size={20} />
                                 </Link>
                                 <Link href={"/personal-blogs/"+post.id} className='p-2 rounded hover:bg-blue-100 touch-manipulation active:bg-blue-100 transition-colors' title="View">

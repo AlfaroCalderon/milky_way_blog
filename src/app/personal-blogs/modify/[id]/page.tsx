@@ -15,7 +15,7 @@ const Page = () => {
     
   return (
     <>
-    <CreationBlogForm />
+    <CreationBlogForm action={2} id={Number(id)} />
     </>
   )
 }

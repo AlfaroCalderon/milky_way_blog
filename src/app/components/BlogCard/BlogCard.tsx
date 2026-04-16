@@ -97,8 +97,8 @@ export const BlogCard = ({id}: {id:string}) => {
             <span className='flex items-center'><Calendar className='inline-block mr-2' size={20} /> {data?.data.updated_at ? data.data.updated_at.substring(0, 10) : ''}</span>
             </span>
             <hr className='text-gray-300' />
-            <p className="text-lg text-gray-700">
-                {data?.data.summary}
+            <p className="text-lg text-gray-700 break-words whitespace-pre-line w-full overflow-x-auto">
+                {data?.data.main_content}
             </p>
         </article>
         <div className='w-full max-w-7xl my-3'>
