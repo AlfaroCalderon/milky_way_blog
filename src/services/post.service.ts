@@ -26,14 +26,26 @@ export const modifyPost = async ({data, id}:{data:BlogPost, id:number}): Promise
 
 
 export const getAllUserPosts = async ({id}:{id:number}):Promise<object> => {
-    const reponse = await ApiBlog.get('blog/management/user_posts/'+id,{
+    const response = await ApiBlog.get('blog/management/user_posts/'+id,{
         headers: {
            "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
            "Authorization": 'bearer '+localStorage.getItem('access_token') 
         }
     });
 
-    return reponse.data;
+    return response.data;
+}
+
+
+export const getAllPost = async ({search, per_page}:{search:string, per_page:number}):Promise<object> => {
+    const response = await ApiBlog.get('blog/list?search='+search+'&per_page='+per_page, {
+        headers:{
+           "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
+           "Authorization": 'bearer '+localStorage.getItem('access_token')
+        }
+    })
+
+    return response.data;
 }
 
 export const getUserPost = async ({id}:{id:number}): Promise<never|BlogPost> => {
