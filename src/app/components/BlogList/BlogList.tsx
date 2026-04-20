@@ -20,15 +20,16 @@ export const BlogList = () => {
  const {register, watch, formState: { errors }} = useForm<input>();
  const search = watch('search', '');
  const [debouncedSearch] = useDebounce(search, 400);
+ const [page, setPage] = useState(1);
 
  const { data, isLoading } = useQuery({
-        queryKey: ['allpost', debouncedSearch],
-        queryFn: () => getAllPost({ search: debouncedSearch, per_page: 4 }),
+        queryKey: ['allpost', debouncedSearch, page],
+        queryFn: () => getAllPost({ search: debouncedSearch, per_page: 1, page }),
     });
 
     const posts = data?.data.data;
     console.log(data?.data)
-    const [page, setPage] = useState(1);
+    
 
 return (
     <>
@@ -64,7 +65,7 @@ return (
                     <span className='flex items-center'><UserRound className='inline-block mr-2' size={20} />{post.author}</span>
                     <span className='flex items-center'><Calendar className='inline-block mr-2' size={20} />{post.created_at?.substring(0, 10)}</span>
                     </span>
-                    <Link href={`/personal-blogs/${post.id}`} className="group w-full flex justify-center items-center py-2 px-4 text-sm font-medi</span>um text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                    <Link href={`/personal-blogs/${post.id}`} className="group w-full flex justify-center items-center py-2 px-4 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
                     Read Post <MoveRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-all ease-in" />
                     </Link>
                 </div>
@@ -76,19 +77,24 @@ return (
             )}
         </div>
         <ReactPaginate
-            pageCount={2}
-            pageRangeDisplayed={2}
-            marginPagesDisplayed={1}
+            pageCount={data?.data.last_page}
+            pageRangeDisplayed={1} // Only 1 page before and after the current page
+            marginPagesDisplayed={1} // Only 1 page at the start and end
             onPageChange={({ selected }) => setPage(selected + 1)}
-            containerClassName="flex gap-2 justify-center mt-6"
-            pageClassName="px-3 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-indigo-50 transition-colors duration-150"
-            activeClassName="bg-indigo-600 text-white border-indigo-600"
-            previousClassName="px-3 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-indigo-100 transition-colors duration-150"
-            nextClassName="px-3 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-indigo-100 transition-colors duration-150"
+            containerClassName="flex gap-2 justify-center mt-8"
+            pageClassName="rounded-full overflow-hidden"
+            pageLinkClassName="block px-4 py-2 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-150 font-semibold shadow-sm cursor-pointer"
+            activeClassName="z-10"
+            activeLinkClassName="bg-indigo-600 text-gray-700 border-indigo-600 pointer-events-none"
+            previousClassName="rounded-full overflow-hidden"
+            previousLinkClassName="block px-4 py-2 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-indigo-100 hover:text-indigo-600 transition-colors duration-150 font-semibold shadow-sm cursor-pointer"
+            nextClassName="rounded-full overflow-hidden"
+            nextLinkClassName="block px-4 py-2 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-indigo-100 hover:text-indigo-600 transition-colors duration-150 font-semibold shadow-sm cursor-pointer"
             disabledClassName="opacity-50 cursor-not-allowed"
-            previousLabel="Previous"
-            nextLabel="Next"
-            breakClassName="px-3 py-1"
+            breakClassName="rounded-full overflow-hidden"
+            breakLinkClassName="block px-4 py-2 text-gray-400"
+            previousLabel="←"
+            nextLabel="→"
         />
     </section>
     </>

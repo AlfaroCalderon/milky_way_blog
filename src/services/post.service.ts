@@ -37,8 +37,8 @@ export const getAllUserPosts = async ({id}:{id:number}):Promise<object> => {
 }
 
 
-export const getAllPost = async ({search, per_page}:{search:string, per_page:number}):Promise<object> => {
-    const response = await ApiBlog.get('blog/list?search='+search+'&per_page='+per_page, {
+export const getAllPost = async ({search, per_page, page}:{search:string, per_page:number, page:number}):Promise<object> => {
+    const response = await ApiBlog.get('blog/list?search='+search+'&page='+page+'&per_page='+per_page, {
         headers:{
            "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
            "Authorization": 'bearer '+localStorage.getItem('access_token')
