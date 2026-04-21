@@ -9,6 +9,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { getUserPost, createComment, getPostComments } from '@/services/post.service'
 import { Comment } from '@/types/blogPost.type'
 import { formatDistanceToNow } from 'date-fns'
+import { useIdUser } from '@/store/useAuthStore'
 
 
 type Input = {
@@ -19,6 +20,7 @@ type Input = {
 
 export const BlogCard = ({id}: {id:string}) => {
 
+    const userId = useIdUser((value) => value.id);
     const idPost = Number(id);
     const {register, handleSubmit, watch, formState:{errors}, reset, setValue} = useForm<Input>(); 
     const {data, isSuccess, isError} = useQuery({queryKey:['post'+idPost], queryFn: () => getUserPost({id: idPost})});
@@ -60,14 +62,14 @@ export const BlogCard = ({id}: {id:string}) => {
 
      useEffect(() => {
         if (data?.data) {
-        setValue('user_id', data.data.user_id);
+        setValue('user_id', data.userId );
         setValue('post_id', data.data.id);
         }
      }, [data, setValue]);
 
     const newComment = (data:Comment) => {
         const comment = data.comment;
-        const user_id = Number(data.user_id);
+        const user_id = Number(userId);
         const post_id = Number(data.post_id);
         mutate.mutate({ comment, user_id, post_id });
     }

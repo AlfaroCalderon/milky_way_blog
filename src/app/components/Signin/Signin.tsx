@@ -86,6 +86,9 @@ export const Signin = () => {
                             <Mail className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400' size={20}/>
                             <input type="email" id='email' {...register('email', {required: 'Email required', pattern:{value:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: "Invalid email address. Please provide a valid email"}})} placeholder='you@example.com' className='pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 w-full'/>
                         </div>
+                        {errors.email && (
+                            <span className="text-red-500 text-xs mt-1">{errors.email.message}</span>
+                        )}
                     </div>
                     <div className='flex flex-col space-y-2'>
                         <label htmlFor="password" className='text-sm font-medium text-gray-700'>Password</label>
@@ -93,6 +96,9 @@ export const Signin = () => {
                         <Lock className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400' size={20} />
                         <input type="password" id='password' {...register('password', {required: 'Password required', pattern:{value:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])([^\s]{8,64})$/, message: "Invalid password. Requirements: at least one lowercase letter, one uppercase letter, one digit, one special character, no whitespace, length 8–64 characters."}})} placeholder='Your password' className='pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 w-full'/>
                         </div>
+                        {errors.password && (
+                            <span className="text-red-500 text-xs mt-1">{errors.password.message}</span>
+                        )}
                     </div>
                     <div className='flex flex-col space-y-5'>
                         <span className='text-right'>

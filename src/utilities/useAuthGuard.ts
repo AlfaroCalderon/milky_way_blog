@@ -51,6 +51,7 @@ export const useAuthGuardLogged = () => {
 
 export const useAuthGuardNotLogged = () => {
   const setLoggedIn = useAuthStore((status) => (status.setIsLogged));
+  const [authCheked, setAuthChecked] = useState(false);
   const route = useRouter();
 
   useEffect(() => {
@@ -59,6 +60,7 @@ export const useAuthGuardNotLogged = () => {
 
       if (!access_token) {
         setLoggedIn(false);
+        setAuthChecked(true);
         return;
       }
 
@@ -72,16 +74,21 @@ export const useAuthGuardNotLogged = () => {
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
           setLoggedIn(false);
+          setAuthChecked(true)
         }else{
           setLoggedIn(true);
           localStorage.setItem('access_token', newAccessToken?.data?.access_token)
+          setAuthChecked(true)
         }
         
       } else {
         setLoggedIn(true);
+        setAuthChecked(true)
       }
     };
 
     checkAuth();
   }, [route, setLoggedIn]);
+
+  return authCheked;
 }

@@ -28,8 +28,6 @@ export const BlogList = () => {
     });
 
     const posts = data?.data.data;
-    console.log(data?.data)
-    
 
 return (
     <>
