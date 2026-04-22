@@ -9,7 +9,7 @@ const Page = () => {
     const id = params.id as string;
     return(
        <>
-       <BlogCard id={id} />
+       <BlogCard act={1} id={id}/>
        </>
     )
 }

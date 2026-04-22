@@ -72,10 +72,9 @@ export const createComment = async ({comment}:{comment:Comment}): Promise<Commen
 
 
 export const getPostComments = async ({id}:{id:number}): Promise<Comment[]|boolean> => {
-    const response = await ApiBlog.get('blog/management/comments/'+id, {
+    const response = await ApiBlog.get('blog/comments/'+id, {
         headers: {
             "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
-            "Authorization": 'bearer '+localStorage.getItem('access_token')
         }
     })
 

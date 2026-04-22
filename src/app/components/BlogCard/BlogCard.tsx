@@ -1,6 +1,6 @@
 'use client'
 import { ArrowLeft, Calendar, UserRound } from 'lucide-react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { sileo } from 'sileo'
@@ -9,7 +9,9 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { getUserPost, createComment, getPostComments } from '@/services/post.service'
 import { Comment } from '@/types/blogPost.type'
 import { formatDistanceToNow } from 'date-fns'
+import { Modal } from '../Modal/Modal'
 import { useIdUser } from '@/store/useAuthStore'
+import { useRouter } from 'next/navigation'
 
 
 type Input = {
@@ -18,15 +20,16 @@ type Input = {
     post_id: number
 }
 
-export const BlogCard = ({id}: {id:string}) => {
-
+export const BlogCard = ({id, act}: {id:string, act:number}) => {
+    const router = useRouter();
     const userId = useIdUser((value) => value.id);
     const idPost = Number(id);
+    const [openModal, setOpenModal] = useState(false);
     const {register, handleSubmit, watch, formState:{errors}, reset, setValue} = useForm<Input>(); 
     const {data, isSuccess, isError} = useQuery({queryKey:['post'+idPost], queryFn: () => getUserPost({id: idPost})});
     const comments = useQuery({queryKey: ['comments'+idPost], queryFn: () => getPostComments({id: idPost}), refetchInterval: 10000, });
 
-    console.log(comments.data?.data);
+    console.log(act);
     const mutate = useMutation({mutationFn: (data:Comment) => {
         return createComment({comment:data})
     }});
@@ -74,8 +77,6 @@ export const BlogCard = ({id}: {id:string}) => {
         mutate.mutate({ comment, user_id, post_id });
     }
 
-    console.log(data?.data.id);
-
   return (
     <>
     <section className="flex w-full flex-col items-center p-4">
@@ -104,10 +105,18 @@ export const BlogCard = ({id}: {id:string}) => {
             </p>
         </article>
         <div className='w-full max-w-7xl my-3'>
-            <Link href={'/personal-blogs'} className='group self-start w-fit bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md font-semibold cursor-pointer flex items-center gap-2'>
-                <ArrowLeft className="inline-block group-hover:-translate-x-1 transition-all duration-300 ease-in" size={18} />
-                Go Back List Of Blogs
-            </Link>
+            {act === 2 ? (
+                 <Link href={'/personal-blogs'} className='group self-start w-fit bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md font-semibold cursor-pointer flex items-center gap-2'>
+                    <ArrowLeft className="inline-block group-hover:-translate-x-1 transition-all duration-300 ease-in" size={18} />
+                    Go Back List Of Blogs
+                </Link>
+            ):(
+                <Link href={'/blogs'} className='group self-start w-fit bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md font-semibold cursor-pointer flex items-center gap-2'>
+                    <ArrowLeft className="inline-block group-hover:-translate-x-1 transition-all duration-300 ease-in" size={18} />
+                    Go Back List Of Blogs
+                </Link>
+
+            )}
         </div>
         <div className='w-full max-w-7xl'>
         <span className='text-3xl font-bold'>Comments</span>
@@ -131,9 +140,17 @@ export const BlogCard = ({id}: {id:string}) => {
                     </div>
                     <input type="hidden" {...register('user_id')} />
                     <input type="hidden" {...register('post_id')} />
-                    <button type='submit' className="self-start bg-green-600 text-white px-4 py-2 rounded-md font-semibold">
-                        Post Comment
-                    </button>
+
+                        {userId ? (
+                            <button type='submit' className="self-start bg-green-600 text-white px-4 py-2 rounded-md font-semibold">
+                             Post Comment
+                            </button>
+                        ):(
+                            <button type='button' onClick={() => setOpenModal(true)} className="self-start bg-green-600 text-white px-4 py-2 rounded-md font-semibold">
+                                Post Comment
+                            </button>
+                        )}
+
                  </form> 
             </div>
 
@@ -150,6 +167,22 @@ export const BlogCard = ({id}: {id:string}) => {
                 ))
             }
 
+
+            {/*Modal*/}
+
+            <Modal open={openModal} onClose={() => setOpenModal(false)}>
+              <div className="flex flex-col items-center space-y-4">
+                <span className="text-lg font-semibold text-gray-800">
+                    Debes iniciar sesión para comentar en este post.
+                </span>
+                <button
+                    className="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold"
+                    onClick={() => router.push('/signin')}
+                >
+                    Ir a iniciar sesión
+                </button>
+              </div>
+            </Modal>
             
         </div>
     </section>

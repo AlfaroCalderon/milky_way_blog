@@ -15,7 +15,7 @@ const Page = () => {
 
     return (
         <>
-            <BlogCard id={id} />
+            <BlogCard  act={2} id={id}/>
         </>
     );
 }

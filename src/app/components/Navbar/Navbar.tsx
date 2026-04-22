@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
 import { useAuthStore } from '@/store/useAuthStore'
+import { useIdUser } from '@/store/useAuthStore'
 
 export const Navbar = () => {
   const [menuActive, setMenuActive] = useState(false);
@@ -26,6 +27,8 @@ export const Navbar = () => {
   const logout = () => {
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
+      useIdUser.setState({id: 0, name: '', lastname: ''});
+      window.location.href = '/signin';
   }
 
   

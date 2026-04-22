@@ -63,7 +63,7 @@ return (
                     <span className='flex items-center'><UserRound className='inline-block mr-2' size={20} />{post.author}</span>
                     <span className='flex items-center'><Calendar className='inline-block mr-2' size={20} />{post.created_at?.substring(0, 10)}</span>
                     </span>
-                    <Link href={`/personal-blogs/${post.id}`} className="group w-full flex justify-center items-center py-2 px-4 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                    <Link href={`/blogs/${post.id}`} className="group w-full flex justify-center items-center py-2 px-4 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
                     Read Post <MoveRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-all ease-in" />
                     </Link>
                 </div>
