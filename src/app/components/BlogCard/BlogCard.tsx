@@ -29,7 +29,6 @@ export const BlogCard = ({id, act}: {id:string, act:number}) => {
     const {data, isSuccess, isError} = useQuery({queryKey:['post'+idPost], queryFn: () => getUserPost({id: idPost})});
     const comments = useQuery({queryKey: ['comments'+idPost], queryFn: () => getPostComments({id: idPost}), refetchInterval: 10000, });
 
-    console.log(act);
     const mutate = useMutation({mutationFn: (data:Comment) => {
         return createComment({comment:data})
     }});
@@ -173,13 +172,13 @@ export const BlogCard = ({id, act}: {id:string, act:number}) => {
             <Modal open={openModal} onClose={() => setOpenModal(false)}>
               <div className="flex flex-col items-center space-y-4">
                 <span className="text-lg font-semibold text-gray-800">
-                    Debes iniciar sesión para comentar en este post.
+                    You must Sign In so you can comment this post.
                 </span>
                 <button
                     className="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold"
                     onClick={() => router.push('/signin')}
                 >
-                    Ir a iniciar sesión
+                    Go to Sign In
                 </button>
               </div>
             </Modal>
