@@ -24,7 +24,7 @@ export const BlogList = () => {
 
  const { data, isLoading } = useQuery({
         queryKey: ['allpost', debouncedSearch, page],
-        queryFn: () => getAllPost({ search: debouncedSearch, per_page: 1, page }),
+        queryFn: () => getAllPost({ search: debouncedSearch, per_page: 10, page }),
     });
 
     const posts = data?.data.data;

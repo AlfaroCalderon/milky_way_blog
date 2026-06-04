@@ -1,6 +1,17 @@
 'use client'
 import { SearchIcon } from 'lucide-react';
+import { getAllUsers } from '@/services/user.service';
+import { useQuery } from '@tanstack/react-query';
+
 export const UserManagement = () => {
+
+const {data, isLoading} = useQuery({
+    queryKey: ['users'],
+    queryFn: () => getAllUsers({search:'', per_page: 10, page: 1})
+})
+
+const users = data?.data.data;
+
     return(
         <>
         <section className='mx-auto w-full flex flex-col justify-center items-center p-8'>
@@ -34,13 +45,26 @@ export const UserManagement = () => {
                 </tr>
                 </thead>
                 <tbody className="bg-white">
-                <tr>
-                    <td className="border border-gray-300 p-2">-</td>
-                    <td className="border border-gray-300 p-2">-</td>
-                    <td className="border border-gray-300 p-2">-</td>
-                    <td className="border border-gray-300 p-2">-</td>
-                    <td className="border border-gray-300 p-2">-</td>
-                </tr>
+                
+                    {
+                    users && users.length > 0 ? ( 
+                        users.map((user: any, inx: number) => (
+                            <tr key={inx}>
+                            <td className="border border-gray-300 p-2">{user.name+' '+user.lastname}</td>
+                            <td className="border border-gray-300 p-2">{user.roles}</td>
+                            <td className="border border-gray-300 p-2">{user.is_active ? 'Active' :'Unactive'}</td>
+                            <td className="border border-gray-300 p-2">{user.created_at}</td>
+                            <td className="border border-gray-300 p-2">-</td>
+                            </tr>
+                        ))
+                    ):(
+                        <tr>
+                        <td className="border border-gray-300 p-2 text-center" colSpan={5}>No users found.</td>
+                        </tr>
+                    )
+                    }
+                    
+                
                 </tbody>
             </table>
             </div>

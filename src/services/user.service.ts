@@ -12,6 +12,17 @@ export const createUser = async({data}: {data:UserType}): Promise<object|never> 
         return response;
 }
 
+export const getAllUsers = async ({search, per_page, page}:{search:string, per_page:number, page:number}): Promise<object> => {
+    const results = await ApiBlog.get('user/management/users?search='+search+'&page='+page+'&per_page='+per_page,{
+        headers:{
+            "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
+            "Authorization": 'bearer '+localStorage.getItem('access_token')
+        }
+    })
+
+    return results.data;
+}
+
 export const sigin = async ({data}:{data:UserLogin}): Promise<object|never> => {
         const response = await ApiBlog.post('user/signin', data, {
             headers: {
